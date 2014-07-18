@@ -8,18 +8,22 @@ $(document).ready(function(){
 });
 
 var processData = function(data){
-	csvData = $.csv.toArrays(data);
-	for(var x = 0; x < csvData.length; x++){
-		y = x + 1;
-		if(csvData[x][0].match(/^(\d+)\/(\d+)\/(\d+)$/) && csvData[y][0].match(/^(\d+)\/(\d+)\/(\d+)$/)){
-		fromDate = csvData[x][0].split("/");
-		toDate = csvData[y][0].split("/");
-		startDate = new Date(fromDate[2], fromDate[0] - 1, fromDate[1]);
+	supportCsvData = $.csv.toArrays(data);
+	for(var currentKey = 0; currentKey < supportCsvData.length; currentKey++){
+		nextKey = currentKey + 1;
+		if(supportCsvData[currentKey][0].match(/^(\d+)\/(\d+)\/(\d+)$/) && supportCsvData[nextKey][0].match(/^(\d+)\/(\d+)\/(\d+)$/)){
+			fromDate = supportCsvData[currentKey][0].split("/");
+			toDate = supportCsvData[nextKey][0].split("/");
+			startDate = new Date(fromDate[2], fromDate[0] - 1, fromDate[1]);
 			endDate = new Date(toDate[2], toDate[0] - 1, toDate[1]);
 			nowDate = new Date();
 			if(nowDate >= startDate && nowDate < endDate){
-				console.log(nowDate);
-				console.log("Support on " + startDate + " to " + endDate);
+				for(var titleKey = 0; titleKey < 7; titleKey++){
+					if(supportCsvData[currentKey][titleKey] == 1){
+						$('#support-man').append(supportCsvData[0][titleKey]);
+						break;
+					}
+				}
 				break;
 			}
 		}
